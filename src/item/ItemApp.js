@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import DataTable from 'react-data-table-component';
 import MiniChart from "react-mini-chart";
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { getRandomNumber } from '../utils/random';
 import './style.css';
 
 const host = 'http://localhost:8080';
+// const host = process.env.API_URL;
 
 // 서버에서 데이터를 가져오는 함수
 const fetchPageData = async (page, pageSize) => {
@@ -139,6 +141,17 @@ function Table() {
     setHighlightedRowId(row.id); // 클릭된 항목을 강조
   };
 
+  const handleDeleteButtonClicked = (row) => {
+    deleteItem(row.id);
+    setEditingItem(null);
+    setName(row.name);
+    setBrandId(brandMap[row.brandName]);
+    setBrandName(row.brandName);
+    setCategoryId(categoryMap[row.categoryName]);
+    setCategoryName(row.categoryName);
+    setPrice(row.price);
+  };
+
   const handleBrandChange = (e) => {
     const selectedBrandName = e.target.value;
     setBrandName(selectedBrandName);
@@ -184,7 +197,7 @@ function Table() {
       showMessage('Item added successfully!');
     } catch (error) {
       console.error('Error adding item:', error);
-      showMessage('Error adding item!');
+      showMessage(`Error adding item! [${error.message}]`);
     }
   };
 
@@ -197,7 +210,7 @@ function Table() {
       showMessage('Item updated successfully!');
     } catch (error) {
       console.error('Error updating item:', error);
-      showMessage('Error updating item!');
+      showMessage(`Error updating item! [${error.message}]`);
     }
   };
 
@@ -206,9 +219,10 @@ function Table() {
       await axios.delete(`${host}/api/v1/items/${id}`);
       fetchItems(currentPage - 1); // 현재 페이지의 데이터를 다시 로딩
       showMessage('Item deleted successfully!');
+      setEditingItem(null);
     } catch (error) {
       console.error('Error deleting item:', error);
-      showMessage('Error deleting item!');
+      showMessage(`Error deleting item! [${error.message}]`);
     }
   };
 
@@ -244,7 +258,7 @@ function Table() {
     setMessage(msg);
     setTimeout(() => {
       setMessage(null);
-    }, 3000); // 3초 후 메시지 자동 제거
+    }, 5000); // 5초 후 메시지 자동 제거
   };
 
   const columns = [
@@ -290,7 +304,7 @@ function Table() {
     },
     {
       name: 'Actions',
-      cell: row => <button onClick={() => deleteItem(row.id)}>Delete</button>,
+      cell: row => <button onClick={() => handleDeleteButtonClicked(row)}>Delete</button>,
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
@@ -312,6 +326,7 @@ function Table() {
 
   return (
     <div className="ItemApp">
+      <Link to="/" className="back-arrow">&#8592; Back to Home</Link> {/* 화살표 컴포넌트 추가 */}
       <h3>Item Management</h3>
       <form onSubmit={handleSubmit} className="form" ref={formRef}>
         <input

@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import DataTable from 'react-data-table-component';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './style.css';
 
 const host = 'http://localhost:8080';
+// const host = process.env.API_URL;
 
 // 서버에서 데이터를 가져오는 함수
 const fetchPageData = async (page, pageSize) => {
@@ -107,6 +109,7 @@ function Table() {
       await axios.delete(`${host}/api/v1/brands/${id}`);
       fetchBrands(currentPage - 1); // 현재 페이지의 데이터를 다시 로딩
       showMessage('Brand deleted successfully!');
+      setEditingBrand(null);
     } catch (error) {
       console.error('Error deleting brand:', error);
       showMessage('Error deleting brand!');
@@ -178,6 +181,7 @@ function Table() {
 
   return (
     <div className="BrandApp">
+      <Link to="/" className="back-arrow">&#8592; Back to Home</Link> {/* 화살표 컴포넌트 추가 */}
       <h3>Brand Management</h3>
       <div className="form-container">
         <form onSubmit={handleSubmit} className="form" ref={formRef}>

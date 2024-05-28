@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 function Home() {
   return (
     <div style={styles.container}>
-      <Link to="/page1" style={styles.button}>Page 1</Link>
-      <Link to="/page2" style={styles.button}>Page 2</Link>
+      <Link to="/page1" style={styles.button}>Brand Management</Link>
+      <Link to="/page2" style={styles.button}>Item Management</Link>
     </div>
   );
 }
@@ -13,7 +13,7 @@ function Home() {
 const styles = {
   container: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     height: '100vh',
