@@ -3,7 +3,7 @@ import DataTable from 'react-data-table-component';
 import MiniChart from "react-mini-chart";
 import axios from 'axios';
 import { getRandomNumber } from '../utils/random';
-import './style.css'; // CSS 파일을 import
+import './style.css';
 
 const host = 'http://localhost:8080';
 
@@ -25,7 +25,7 @@ const fetchPageData = async (page, pageSize) => {
 
 const fetchBrands = async () => {
   try {
-    const response = await axios.get(`${host}/api/v1/brands`);
+    const response = await axios.get(`${host}/api/v1/brands/all`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching brands:`, error);
@@ -35,7 +35,7 @@ const fetchBrands = async () => {
 
 const fetchCategories = async () => {
   try {
-    const response = await axios.get(`${host}/api/v1/categories`);
+    const response = await axios.get(`${host}/api/v1/categories/all`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching categories:`, error);
@@ -106,8 +106,7 @@ function Table() {
         tableRef.current && !tableRef.current.contains(event.target) &&
         formRef.current && !formRef.current.contains(event.target)
       ) {
-        setEditingItem(null);
-        setHighlightedRowId(null);
+        resetForm();
       }
     };
 
@@ -150,6 +149,28 @@ function Table() {
     const selectedCategoryName = e.target.value;
     setCategoryName(selectedCategoryName);
     setCategoryId(categoryMap[selectedCategoryName]);
+  };
+
+  const handleBrandFocus = async () => {
+    const brandsData = await fetchBrands();
+    setBrands(brandsData);
+
+    const brandMapping = {};
+    brandsData.forEach(brand => {
+      brandMapping[brand.name] = brand.id;
+    });
+    setBrandMap(brandMapping);
+  };
+
+  const handleCategoryFocus = async () => {
+    const categoryData = await fetchCategories();
+    setCategories(categoryData);
+
+    const categoryMapping = {};
+    categoryData.forEach(category => {
+      categoryMapping[category.name] = category.id;
+    });
+    setCategoryMap(categoryMapping);
   };
 
   const addItem = async () => {
@@ -290,7 +311,7 @@ function Table() {
   ];
 
   return (
-    <div className="App">
+    <div className="ItemApp">
       <h3>Item Management</h3>
       <form onSubmit={handleSubmit} className="form" ref={formRef}>
         <input
@@ -302,6 +323,7 @@ function Table() {
         <select
           value={brandName}
           onChange={handleBrandChange}
+          onFocus={handleBrandFocus}
         >
           <option value="">Select Brand</option>
           {brands.map((brand) => (
@@ -313,6 +335,7 @@ function Table() {
         <select
           value={categoryName}
           onChange={handleCategoryChange}
+          onFocus={handleCategoryFocus}
         >
           <option value="">Select Category</option>
           {categories.map((category) => (
@@ -327,7 +350,7 @@ function Table() {
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
-        <button type="submit">{editingItem ? 'Update' : 'Add'} Item</button>
+        <button type="submit">{editingItem ? 'Update' : 'Add'}</button>
         {editingItem && <button onClick={resetForm}>Cancel</button>}
       </form>
       <div className="message">{message && <p>{message}</p>}</div> {/* 메시지 출력 */}
