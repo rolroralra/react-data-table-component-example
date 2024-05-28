@@ -5,6 +5,8 @@ import MiniChart from "react-mini-chart";
 import axios from 'axios';
 import { getRandomNumber } from './utils/random';
 
+const host = 'http://localhost:8080'
+
 const columns = [
   {
     name: 'ID',
@@ -53,7 +55,7 @@ const columns = [
 // 서버에서 데이터를 가져오는 함수
 const fetchPageData = async (page, pageSize) => {
   try {
-    const response = await axios.get(`/api/v1/items?page=${page}&size=${pageSize}`);
+    const response = await axios.get(`${host}/api/v1/items?page=${page}&size=${pageSize}`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching data for page ${page}:`, error);
