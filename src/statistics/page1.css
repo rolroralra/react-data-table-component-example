@@ -1,0 +1,28 @@
+.feature1 {
+    padding: 20px;
+  }
+  
+  .feature1 h3 {
+    text-align: center;
+  }
+  
+  .feature1 table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  .feature1 th,
+  .feature1 td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .feature1 th {
+    background-color: #f2f2f2;
+  }
+  
+  .feature1 tfoot td {
+    font-weight: bold;
+  }

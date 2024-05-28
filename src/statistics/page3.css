@@ -1,0 +1,39 @@
+.min-max-price {
+    padding: 20px;
+  }
+  
+  .min-max-price h3 {
+    text-align: center;
+  }
+  
+  .category-form {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .category-form input {
+    padding: 8px;
+    margin-right: 10px;
+  }
+  
+  .category-form button {
+    padding: 8px;
+  }
+  
+  .min-max-price table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  .min-max-price th,
+  .min-max-price td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .min-max-price th {
+    background-color: #f2f2f2;
+  }
+  

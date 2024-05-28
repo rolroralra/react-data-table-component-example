@@ -1,0 +1,29 @@
+.brand-statistics {
+    padding: 20px;
+  }
+  
+  .brand-statistics h3 {
+    text-align: center;
+  }
+  
+  .brand-statistics table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  .brand-statistics th,
+  .brand-statistics td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .brand-statistics th {
+    background-color: #f2f2f2;
+  }
+  
+  .brand-statistics tfoot td {
+    font-weight: bold;
+  }
+  
