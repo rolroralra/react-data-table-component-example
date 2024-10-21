@@ -1,10 +1,11 @@
 // ItemList.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './page1.css';
 import { Link } from 'react-router-dom';
+import { getApiUrl } from '../utils/apiUrl';
+import './page1.css';
 
-const host = 'http://localhost:8080';
+const host = getApiUrl();
 
 const fetchData = async () => {
     try {

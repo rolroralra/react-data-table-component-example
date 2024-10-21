@@ -1,10 +1,11 @@
 
 import React, { useEffect, useState } from 'react';
-import './page3.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { getApiUrl } from '../utils/apiUrl';
+import './page3.css';
 
-const host = 'http://localhost:8080';
+const host = getApiUrl();
 
 const fetchMinMaxPrice = async (categoryName) => {
     try {

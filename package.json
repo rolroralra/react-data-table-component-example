@@ -12,10 +12,12 @@
     "react-scripts": "^5.0.1"
   },
   "scripts": {
+    "build": "react-scripts build",
     "start": "react-scripts start",
     "build:local": "cross-env NODE_ENV=local react-scripts build",
     "start:local": "cross-env NODE_ENV=local react-scripts start",
-    "build": "react-scripts build",
+    "build:production": "cross-env NODE_ENV=production react-scripts build",
+    "start:production": "cross-env NODE_ENV=production react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

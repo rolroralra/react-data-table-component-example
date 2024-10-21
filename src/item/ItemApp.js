@@ -4,10 +4,10 @@ import MiniChart from "react-mini-chart";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { getRandomNumber } from '../utils/random';
+import { getApiUrl } from '../utils/apiUrl';
 import './style.css';
 
-const host = 'http://localhost:8080';
-// const host = process.env.API_URL;
+const host = getApiUrl();
 
 // 서버에서 데이터를 가져오는 함수
 const fetchPageData = async (page, pageSize) => {

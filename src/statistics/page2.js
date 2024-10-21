@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import './page2.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { getApiUrl } from '../utils/apiUrl';
+import './page2.css';
 
-const host = 'http://localhost:8080';
+const host = getApiUrl();
 
 const fetchSingleBrandStatistics = async () => {
     try {
