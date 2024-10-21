@@ -36,7 +36,7 @@ if (!data) {
 return (
     <div className="feature1">
     <Link to="/" className="back-arrow">&#8592; Back to Home</Link> {/* 화살표 컴포넌트 추가 */}
-    <h3>Feature 1</h3>
+    <h3>카테고리별 최소 가격 아이템 목록</h3>
     <table>
         <thead>
         <tr>

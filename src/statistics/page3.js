@@ -7,7 +7,21 @@ import './page3.css';
 
 const host = getApiUrl();
 
-const fetchMinMaxPrice = async (categoryName) => {
+const MinMaxPrice = () => {
+  const [categoryName, setCategoryName] = useState('');
+  const [data, setData] = useState(null);
+  const [categories, setCategories] = useState([]);
+
+  const loadStatistics = async (category) => {
+      const data = await fetchMinMaxPrice(category);
+      setData(data);
+    };
+
+  useEffect(() => {
+    // TBD
+  }, []);
+
+  const fetchMinMaxPrice = async (categoryName) => {
     try {
       const response = await axios.get(`${host}/api/v1/items/statistics/min-max-price`, {
         params: { categoryName }
@@ -19,88 +33,102 @@ const fetchMinMaxPrice = async (categoryName) => {
     }
   };
 
-
-  const MinMaxPrice = () => {
-    const [categoryName, setCategoryName] = useState('상의');
-    const [data, setData] = useState(null);
-  
-    const loadStatistics = async (category) => {
-        const data = await fetchMinMaxPrice(category);
-        setData(data);
-      };
-
-    useEffect(() => {
-        loadStatistics('상의');
-    }, []);
-
-    const handleInputChange = (e) => {
-      setCategoryName(e.target.value);
-    };
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      const data = await fetchMinMaxPrice(categoryName);
-      setData(data);
-    };
-  
-    return (
-      <div className="min-max-price">
-        <Link to="/" className="back-arrow">&#8592; Back to Home</Link> {/* 화살표 컴포넌트 추가 */}
-        <h3>Min-Max Price Statistics</h3>
-        <form onSubmit={handleSubmit} className="category-form">
-          <input
-            type="text"
-            value={categoryName}
-            onChange={handleInputChange}
-            placeholder="Enter category name"
-          />
-          <button type="submit">Search</button>
-        </form>
-        {data && (
-          <div>
-            <h4>Category: {data.categoryName}</h4>
-            <div>
-              <h5>Minimum Price Brands</h5>
-              <table>
-                <thead>
-                  <tr>
-                    <th>브랜드</th>
-                    <th>가격</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.brandMinPrice.map((item, index) => (
-                    <tr key={index}>
-                      <td>{item.brandName}</td>
-                      <td>{item.price.toLocaleString()} 원</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div>
-              <h5>Maximum Price Brands</h5>
-              <table>
-                <thead>
-                  <tr>
-                    <th>브랜드</th>
-                    <th>가격</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.brandMaxPrice.map((item, index) => (
-                    <tr key={index}>
-                      <td>{item.brandName}</td>
-                      <td>{item.price.toLocaleString()} 원</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-      </div>
-    );
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`${host}/api/v1/categories/all`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching categories:`, error);
+      return [];
+    }
   };
+
+  const handleCategoryChange = async (e) => {
+    e.preventDefault();
+
+    const selectedCategoryName = e.target.value
+    setCategoryName(selectedCategoryName);
+
+    const data = await fetchMinMaxPrice(selectedCategoryName);
+    setData(data);
+  };
+
+  const handleCategoryFocus = async () => {
+    const categoryData = await fetchCategories();
+
+    setCategories(categoryData);
+  };
+
+  return (
+    <div className="min-max-price">
+      <Link to="/" className="back-arrow">&#8592; Back to Home</Link> {/* 화살표 컴포넌트 추가 */}
+      <h3>카테고리별 최대 최소 가격</h3>
+      <form onSubmit={handleCategoryChange} className="category-form">
+        <label for="category-select">
+          카테고리: 
+        </label>
+        <select
+          id="category-select"
+          value={categoryName}
+          onChange={handleCategoryChange}
+          onFocus={handleCategoryFocus}
+        >
+
+          <option value="" selected disabled>
+            Select Category
+          </option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+      </form>
+      {data && (
+        <div>
+          <h4>Category: {data.categoryName}</h4>
+          <div>
+            <h5>Minimum Price Brands</h5>
+            <table>
+              <thead>
+                <tr>
+                  <th>브랜드</th>
+                  <th>가격</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.brandMinPrice.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.brandName}</td>
+                    <td>{item.price.toLocaleString()} 원</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h5>Maximum Price Brands</h5>
+            <table>
+              <thead>
+                <tr>
+                  <th>브랜드</th>
+                  <th>가격</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.brandMaxPrice.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.brandName}</td>
+                    <td>{item.price.toLocaleString()} 원</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
   
-  export default MinMaxPrice;
+export default MinMaxPrice;

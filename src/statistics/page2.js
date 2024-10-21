@@ -35,7 +35,7 @@ const fetchSingleBrandStatistics = async () => {
     return (
       <div className="brand-statistics">
         <Link to="/" className="back-arrow">&#8592; Back to Home</Link> {/* 화살표 컴포넌트 추가 */}
-        <h3>Featuer2 - Brand: {data.brandName}</h3>
+        <h3>최소 가격 브랜드:  {data.brandName}</h3>
         <table>
           <thead>
             <tr>
