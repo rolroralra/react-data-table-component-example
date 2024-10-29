@@ -1,0 +1,10 @@
+services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    network_mode: host
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../build:/usr/share/nginx/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
